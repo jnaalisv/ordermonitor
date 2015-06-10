@@ -1,0 +1,30 @@
+{
+  "globalstrict": true,
+  "curly": true,
+  "eqeqeq": true,
+  "eqnull": true,
+  "browser": true,
+  "strict": true,
+  "globals": {
+    "jQuery": true,
+    "angular": true,
+    "module": true,
+    "it": true,
+    "beforeEach": true,
+    "describe": true,
+    "inject": true,
+    "expect": true,
+    "require": true,
+    "browser": true,
+    "jasmine": true,
+    "exports": true,
+    "element": true,
+    "by": true,
+    "afterEach": true,
+    "spyOn": true,
+    "$$": true,
+    "$": true,
+    "console": true,
+    "Buffer": true
+  }
+}

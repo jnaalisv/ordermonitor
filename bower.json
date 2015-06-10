@@ -1,0 +1,10 @@
+{
+  "name": "ordermonitor",
+  "description": "",
+  "version": "0.0.1",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.1"
+  }
+}
