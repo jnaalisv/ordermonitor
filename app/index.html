@@ -1,6 +1,12 @@
 <html ng-app="ordermonitor">
     <head>
         <style>
+            .row {
+                height: 29px;
+                font-family: sans-serif;
+                font-size: 12px;
+                font-weight: normal;
+            }
             .selectedRow {
                 outline: 2px solid black;
             }
@@ -27,7 +33,7 @@
                     <th>name</th>
                 </tr>
                 </thead>
-                <tr ng-repeat="row in controller.rows " ng-class="{selectedRow: row.number == controller.selectedNumber}" ng-click="controller.selectRow($index)">
+                <tr class="row" ng-repeat="row in controller.rows " ng-class="{selectedRow: row.number == controller.selectedNumber}" ng-click="controller.selectRow($index)">
                     <td>{{row.number}}</td>
                     <td>{{row.square}}</td>
                     <td>{{row.cube}}</td>
