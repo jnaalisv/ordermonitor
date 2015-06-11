@@ -1,18 +1,41 @@
 <html ng-app="ordermonitor">
     <head>
         <style>
+            .selectedRow {
+                outline: 2px solid black;
+            }
             #container {
                 outline: 2px dotted black;
-                margin-left: 400px;
+                margin-left: 800px;
                 margin-top: 200px;
-                width: 200px;
+                width: 250px;
+                height: 600px;
+                overflow: auto;
+                position: relative;
             }
         </style>
     </head>
-    <body ng-controller="OrderMonitorController as orderMonitorController">
+    <body ng-controller="OrderMonitorController as controller">
 
         <div id="container">
-            something
+
+
+            <table>
+                <thead>
+                <tr>
+                    <th>nro</th>
+                    <th>sqr</th>
+                    <th>cb</th>
+                    <th>name</th>
+                </tr>
+                </thead>
+                <tr ng-repeat="row in controller.rows " ng-class="{selectedRow: row.number == controller.selectedNumber}" ng-click="controller.selectRow(row)">
+                    <td>{{row.number}}</td>
+                    <td>{{row.square}}</td>
+                    <td>{{row.cube}}</td>
+                    <td>{{row.name}}</td>
+                </tr>
+            </table>
         </div>
 
 
