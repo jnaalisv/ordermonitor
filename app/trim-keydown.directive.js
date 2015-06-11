@@ -34,9 +34,7 @@
 
                 var wheelChange = ($event.wheelDelta / 120) * -1; // invert scroll direction
 
-                for (var i = 0; i < Math.abs(wheelChange) ; i++) {
-                    moveSelection(wheelChange < 0 ? -1 : 1);
-                }
+                moveSelection(wheelChange);
             });
 
             var scrollBarElement = angular.element(scrollBar);
@@ -46,16 +44,17 @@
                 var newIndex = Math.round(targetScrollTop / $scope.controller.getLineHeight());
                 var indexDiff = ($scope.controller.getSelectedRowIndex() - newIndex)*-1;
 
-                for (var i = 0; i < Math.abs(indexDiff) ; i++) {
-                    moveSelection(indexDiff < 0 ? -1 : 1);
-                }
-
+                moveSelection(indexDiff);
             });
 
             function moveSelection(delta) {
-                $scope.controller.moveSelection(delta);
-                scrollBar.scrollTop = $scope.controller.getSelectedRowIndex() * $scope.controller.getLineHeight();
-                $scope.$digest();
+
+                for (var i = 0; i < Math.abs(delta) ; i++) {
+                    $scope.controller.moveSelection(delta < 0 ? -1 : 1);
+                    scrollBar.scrollTop = $scope.controller.getSelectedRowIndex() * $scope.controller.getLineHeight();
+                    $scope.$digest();
+                }
+
             }
 
         }
