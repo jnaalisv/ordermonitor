@@ -31,15 +31,12 @@
                     $scope.$digest();
                 }
 
-
             });
 
             $document.bind('wheel', function($event) {
-
                 $event.preventDefault();
 
                 var wheelChange = ($event.wheelDelta / 120) * -1; // invert scroll direction
-
 
                 if (wheelChange === 0) {
                     return;
@@ -48,12 +45,21 @@
                 for (var i = 0; i < Math.abs(wheelChange) ; i++) {
                     $scope.controller.moveFocus(wheelChange < 0 ? -1 : 1);
                 }
+            });
+
+            var scrollBarElement = angular.element(scrollBar);
+            scrollBarElement.bind('scroll', function($event) {
+
+                var targetScrollTop = $event.target.scrollTop;
+                var newIndex = Math.round(targetScrollTop / $scope.controller.LINE_HEIGHT);
+                var indexDiff = ($scope.controller.selectedRowIndex - newIndex)*-1;
+
+                for (var i = 0; i < Math.abs(indexDiff) ; i++) {
+                    $scope.controller.moveFocus(indexDiff < 0 ? -1 : 1);
+                }
 
             });
 
-            $document.bind('scroll', function($event) {
-
-            });
         }
     }
 })();

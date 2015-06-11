@@ -63,8 +63,7 @@
             } else if (index >= viewModel.indexOfFirstShownRow + viewModel.monitorRowsShown) {
                 viewModel.indexOfFirstShownRow++;
             }
-
-
+            
             scrollBar.scrollTop = index * viewModel.LINE_HEIGHT;
 
             viewModel.selectedRowIndex = index;
