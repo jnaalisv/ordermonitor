@@ -9,18 +9,25 @@
         };
 
         function linkFunction($scope, $element) {
+            $document.bind("keydown", function($event) {
 
-            $document.bind("keydown", handleKeydown);
+                var lineHeight = 31;
+                var delta = 0;
 
-            function handleKeydown($event) {
                 var charCode = $event.which || $event.keyCode;
                 if (charCode === 38) {
                     $scope.controller.moveFocusUp();
+                    delta = -lineHeight;
                 } else if (charCode === 40) {
                     $scope.controller.moveFocusDown();
+                    delta = lineHeight;
                 }
+
+                $element[0].scrollTop = $element[0].scrollTop + delta;
+
+                $event.preventDefault();
                 $scope.$digest();
-            }
+            });
         }
     }
 })();
