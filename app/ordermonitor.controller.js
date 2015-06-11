@@ -18,7 +18,11 @@
         }
         viewModel.selectedRowIndex = 0;
         viewModel.selectedNumber = viewModel.rows[viewModel.selectedRowIndex];
-
+        
+        viewModel.selectRow = function($index) {
+            viewModel.selectedRowIndex = $index;
+            viewModel.selectedNumber = viewModel.rows[$index].number;
+        }
     }
 
 })();
