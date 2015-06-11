@@ -5,11 +5,14 @@
         .module('ordermonitor')
         .controller('OrderMonitorController', OrderMonitorController);
 
-    function OrderMonitorController() {
+    function OrderMonitorController($scope) {
+
+        var scrollBar;
 
         var viewModel = this;
         viewModel.monitorRowsShown = 18;
         viewModel.indexOfFirstShownRow = 0;
+        viewModel.LINE_HEIGHT = 31;
 
         viewModel.rows = [];
         var names = ['juho', 'kari', 'matias', 'chao'];
@@ -18,6 +21,10 @@
         }
         viewModel.selectedRowIndex = 0;
         viewModel.selectedNumber = viewModel.rows[viewModel.selectedRowIndex];
+
+        viewModel.setScrollBar = function(element) {
+            scrollBar = element;
+        };
 
         viewModel.selectRow = function(row) {
             var newIndex = findRealIndexByNumber(row.number);
@@ -57,9 +64,24 @@
                 viewModel.indexOfFirstShownRow++;
             }
 
+
+            scrollBar.scrollTop = index * viewModel.LINE_HEIGHT;
+
             viewModel.selectedRowIndex = index;
             viewModel.selectedNumber = viewModel.rows[index].number;
-        }
+        };
+
+        viewModel.moveFocus = function(amount) {
+            var newPosition = viewModel.selectedRowIndex + amount;
+
+            if (newPosition < 0 || viewModel.rows.length === newPosition) {
+                return;
+            }
+
+            selectRowByIndex(newPosition);
+
+            $scope.$digest();
+        };
     }
 
 })();
