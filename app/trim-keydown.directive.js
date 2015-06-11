@@ -12,23 +12,19 @@
 
             var scrollBar = $element[0].childNodes[1];
 
-            $scope.controller.setScrollBar(scrollBar);
-
             var dummy = angular.element(scrollBar.childNodes[1]);
-            dummy.css('height', $scope.controller.rows.length* $scope.controller.LINE_HEIGHT+'px');
+            dummy.css('height', $scope.controller.getRowContainerPhysicalHeight()+'px');
 
             $document.bind("keydown", function($event) {
 
                 var charCode = $event.which || $event.keyCode;
                 if (charCode === 38) {
                     $event.preventDefault();
-                    $scope.controller.moveFocusUp();
-                    $scope.$digest();
+                    moveSelection(-1);
 
                 } else if (charCode === 40) {
                     $event.preventDefault();
-                    $scope.controller.moveFocusDown();
-                    $scope.$digest();
+                    moveSelection(1);
                 }
 
             });
@@ -38,12 +34,8 @@
 
                 var wheelChange = ($event.wheelDelta / 120) * -1; // invert scroll direction
 
-                if (wheelChange === 0) {
-                    return;
-                }
-
                 for (var i = 0; i < Math.abs(wheelChange) ; i++) {
-                    $scope.controller.moveFocus(wheelChange < 0 ? -1 : 1);
+                    moveSelection(wheelChange < 0 ? -1 : 1);
                 }
             });
 
@@ -51,14 +43,20 @@
             scrollBarElement.bind('scroll', function($event) {
 
                 var targetScrollTop = $event.target.scrollTop;
-                var newIndex = Math.round(targetScrollTop / $scope.controller.LINE_HEIGHT);
-                var indexDiff = ($scope.controller.selectedRowIndex - newIndex)*-1;
+                var newIndex = Math.round(targetScrollTop / $scope.controller.getLineHeight());
+                var indexDiff = ($scope.controller.getSelectedRowIndex() - newIndex)*-1;
 
                 for (var i = 0; i < Math.abs(indexDiff) ; i++) {
-                    $scope.controller.moveFocus(indexDiff < 0 ? -1 : 1);
+                    moveSelection(indexDiff < 0 ? -1 : 1);
                 }
 
             });
+
+            function moveSelection(delta) {
+                $scope.controller.moveSelection(delta);
+                scrollBar.scrollTop = $scope.controller.getSelectedRowIndex() * $scope.controller.getLineHeight();
+                $scope.$digest();
+            }
 
         }
     }

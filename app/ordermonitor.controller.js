@@ -5,30 +5,37 @@
         .module('ordermonitor')
         .controller('OrderMonitorController', OrderMonitorController);
 
-    function OrderMonitorController($scope) {
+    function OrderMonitorController() {
 
-        var scrollBar;
+        var LINE_HEIGHT = 31;
 
         var viewModel = this;
         viewModel.monitorRowsShown = 18;
         viewModel.indexOfFirstShownRow = 0;
-        viewModel.LINE_HEIGHT = 31;
+
+        viewModel.getLineHeight = function() {
+            return LINE_HEIGHT;
+        };
+
+        viewModel.getRowContainerPhysicalHeight = function() {
+            return viewModel.rows.length * LINE_HEIGHT;
+        };
 
         viewModel.rows = [];
         var names = ['juho', 'kari', 'matias', 'chao'];
         for (var i = 0; i < 300; i++) {
             viewModel.rows.push({number:i, square: i*i, cube: i*i*i, name: names[i%names.length]});
         }
-        viewModel.selectedRowIndex = 0;
-        viewModel.selectedNumber = viewModel.rows[viewModel.selectedRowIndex];
 
-        viewModel.setScrollBar = function(element) {
-            scrollBar = element;
+        var selectedRowIndex = 0;
+        viewModel.getSelectedRowIndex = function() {
+            return selectedRowIndex;
         };
+
+        viewModel.selectedNumber = viewModel.rows[selectedRowIndex];
 
         viewModel.selectRow = function(row) {
             var newIndex = findRealIndexByNumber(row.number);
-
             selectRowByIndex(newIndex);
         };
 
@@ -42,44 +49,25 @@
             return 0;
         }
 
-
-        viewModel.moveFocusUp = function() {
-            if (viewModel.selectedRowIndex === 0) {
-                return;
-            }
-            selectRowByIndex(viewModel.selectedRowIndex-1);
-        };
-
-        viewModel.moveFocusDown = function() {
-            if (viewModel.rows.length === viewModel.selectedRowIndex + 1) {
-                return;
-            }
-            selectRowByIndex(viewModel.selectedRowIndex+1);
-        };
-
         var selectRowByIndex = function(index) {
             if (index < viewModel.indexOfFirstShownRow && viewModel.indexOfFirstShownRow > 0) {
                 viewModel.indexOfFirstShownRow--;
             } else if (index >= viewModel.indexOfFirstShownRow + viewModel.monitorRowsShown) {
                 viewModel.indexOfFirstShownRow++;
             }
-            
-            scrollBar.scrollTop = index * viewModel.LINE_HEIGHT;
 
-            viewModel.selectedRowIndex = index;
+            selectedRowIndex = index;
             viewModel.selectedNumber = viewModel.rows[index].number;
         };
 
-        viewModel.moveFocus = function(amount) {
-            var newPosition = viewModel.selectedRowIndex + amount;
+        viewModel.moveSelection = function(delta) {
+            var newPosition = selectedRowIndex + delta;
 
             if (newPosition < 0 || viewModel.rows.length === newPosition) {
                 return;
             }
 
             selectRowByIndex(newPosition);
-
-            $scope.$digest();
         };
     }
 
