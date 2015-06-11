@@ -18,11 +18,26 @@
         }
         viewModel.selectedRowIndex = 0;
         viewModel.selectedNumber = viewModel.rows[viewModel.selectedRowIndex];
-        
+
         viewModel.selectRow = function($index) {
             viewModel.selectedRowIndex = $index;
             viewModel.selectedNumber = viewModel.rows[$index].number;
-        }
+        };
+
+        viewModel.moveFocusUp = function() {
+            if (viewModel.selectedRowIndex === 0) {
+                return;
+            }
+            viewModel.selectRow(viewModel.selectedRowIndex-1);
+        };
+
+        viewModel.moveFocusDown = function() {
+            if (viewModel.rows.length === viewModel.selectedRowIndex + 1) {
+                return;
+            }
+            viewModel.selectRow(viewModel.selectedRowIndex+1);
+        };
+
     }
 
 })();

@@ -15,7 +15,7 @@
             }
         </style>
     </head>
-    <body ng-controller="OrderMonitorController as controller">
+    <body ng-controller="OrderMonitorController as controller" trim-keydown>
 
         <div id="container">
             <table>
@@ -39,6 +39,7 @@
 
         <script src="bower_components/angular/angular.js" ></script>
         <script src="ordermonitor.module.js" ></script>
+        <script src="trim-keydown.directive.js"></script>
         <script src="ordermonitor.controller.js"></script>
     </body>
 </html>
