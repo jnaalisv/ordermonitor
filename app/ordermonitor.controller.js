@@ -8,7 +8,7 @@
     function OrderMonitorController() {
 
         var viewModel = this;
-        viewModel.monitorRowsShown = 26;
+        viewModel.monitorRowsShown = 18;
         viewModel.indexOfFirstShownRow = 0;
 
         viewModel.rows = [];
@@ -19,25 +19,47 @@
         viewModel.selectedRowIndex = 0;
         viewModel.selectedNumber = viewModel.rows[viewModel.selectedRowIndex];
 
-        viewModel.selectRow = function($index) {
-            viewModel.selectedRowIndex = $index;
-            viewModel.selectedNumber = viewModel.rows[$index].number;
+        viewModel.selectRow = function(row) {
+            var newIndex = findRealIndexByNumber(row.number);
+
+            selectRowByIndex(newIndex);
         };
+
+        function findRealIndexByNumber(number) {
+            for(var i = 0; i < viewModel.rows.length; i++) {
+                if (viewModel.rows[i].number === number) {
+                    return i;
+                }
+            }
+            console.log('error, didn\'t find real index for ' + number);
+            return 0;
+        }
+
 
         viewModel.moveFocusUp = function() {
             if (viewModel.selectedRowIndex === 0) {
                 return;
             }
-            viewModel.selectRow(viewModel.selectedRowIndex-1);
+            selectRowByIndex(viewModel.selectedRowIndex-1);
         };
 
         viewModel.moveFocusDown = function() {
             if (viewModel.rows.length === viewModel.selectedRowIndex + 1) {
                 return;
             }
-            viewModel.selectRow(viewModel.selectedRowIndex+1);
+            selectRowByIndex(viewModel.selectedRowIndex+1);
         };
 
+        var selectRowByIndex = function(index) {
+            if (index < viewModel.indexOfFirstShownRow && viewModel.indexOfFirstShownRow > 0) {
+                viewModel.indexOfFirstShownRow--;
+            } else if (index >= viewModel.indexOfFirstShownRow + viewModel.monitorRowsShown) {
+                viewModel.indexOfFirstShownRow++;
+            }
+
+            viewModel.selectedRowIndex = index;
+            viewModel.selectedNumber = viewModel.rows[index].number;
+        }
     }
 
 })();

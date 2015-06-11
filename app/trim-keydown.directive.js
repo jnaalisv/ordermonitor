@@ -9,21 +9,28 @@
         };
 
         function linkFunction($scope, $element) {
+
+            var LINE_HEIGHT = 31;
+
+            var scrollBar = $element[0].childNodes[1];
+
+            var dummy = angular.element(scrollBar.childNodes[1]);
+            dummy.css('height', $scope.controller.rows.length*LINE_HEIGHT+'px');
+
             $document.bind("keydown", function($event) {
-
-                var lineHeight = 31;
-                var delta = 0;
-
+                
+                var scrollDelta = 0;
                 var charCode = $event.which || $event.keyCode;
                 if (charCode === 38) {
                     $scope.controller.moveFocusUp();
-                    delta = -lineHeight;
+                    scrollDelta = -LINE_HEIGHT;
                 } else if (charCode === 40) {
                     $scope.controller.moveFocusDown();
-                    delta = lineHeight;
+                    scrollDelta = LINE_HEIGHT;
                 }
 
-                $element[0].scrollTop = $element[0].scrollTop + delta;
+
+                scrollBar.scrollTop = scrollBar.scrollTop + scrollDelta;
 
                 $event.preventDefault();
                 $scope.$digest();

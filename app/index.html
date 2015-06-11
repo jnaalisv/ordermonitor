@@ -15,15 +15,34 @@
                 margin-left: 800px;
                 margin-top: 200px;
                 width: 250px;
-                height: 600px;
+                height: 582px;
                 overflow: auto;
                 position: relative;
             }
+
+            #scrollBar {
+                height: 100%;
+                width: 1em;
+                overflow-y: auto;
+                top: 0;
+                right: 0;
+                position: absolute;
+            }
+
+            #dummy {
+
+            }
+
         </style>
     </head>
     <body ng-controller="OrderMonitorController as controller" >
 
         <div id="container" trim-keydown>
+
+            <div id="scrollBar">
+                <div id="dummy"></div>
+            </div>
+
             <table>
                 <thead>
                 <tr>
@@ -33,7 +52,7 @@
                     <th>name</th>
                 </tr>
                 </thead>
-                <tr class="row" ng-repeat="row in controller.rows " ng-class="{selectedRow: row.number == controller.selectedNumber}" ng-click="controller.selectRow($index)">
+                <tr class="row" ng-repeat="row in controller.rows | scrollFilter:controller.monitorRowsShown:controller.indexOfFirstShownRow " ng-class="{selectedRow: row.number == controller.selectedNumber}" ng-click="controller.selectRow(row)">
                     <td>{{row.number}}</td>
                     <td>{{row.square}}</td>
                     <td>{{row.cube}}</td>
@@ -42,10 +61,10 @@
             </table>
         </div>
 
-
         <script src="bower_components/angular/angular.js" ></script>
         <script src="ordermonitor.module.js" ></script>
         <script src="trim-keydown.directive.js"></script>
+        <script src="scroll.filter.js"></script>
         <script src="ordermonitor.controller.js"></script>
     </body>
 </html>
